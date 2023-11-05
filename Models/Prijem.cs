@@ -10,8 +10,8 @@ namespace ProjektniZadatak.Models
         public DateTime DatumVrijemePrijema { get; set; }
         public int PacijentID { get; set; }
         public int LjekarID { get; set; }
-        public int NalazID { get; set; }
-        public bool HitniPrijem { get; set; }
+        public int? NalazID { get; set; }
+        public bool HitniPrijem { get; set; } = false;
 
         public Pacijent Pacijent { get; set; }
         public Ljekar Ljekar { get; set; }
