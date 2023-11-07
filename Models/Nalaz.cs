@@ -11,5 +11,8 @@ namespace ProjektniZadatak.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}")]
         public DateTime DatumVrijemeKreiranja { get; set; }
+        public int PrijemID { get; set; }
+
+        public Prijem Prijem { get; set; }
     }
 }
