@@ -48,7 +48,11 @@ namespace ProjektniZadatak.Controllers
         // GET: Pacijent/Create
         public IActionResult Create()
         {
-            return View();
+            Pacijent p = new Pacijent
+            {
+                Spol = Spol.Nepoznato
+            };
+            return View(p);
         }
 
         // POST: Pacijent/Create

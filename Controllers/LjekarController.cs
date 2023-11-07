@@ -63,7 +63,19 @@ namespace ProjektniZadatak.Controllers
                 _context.Add(ljekar);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            } /*else
+            {
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        // The error message is in error.ErrorMessage
+                        var e = error;
+                    }
+                }
+
+            }*/
             return View(ljekar);
         }
 
@@ -97,6 +109,7 @@ namespace ProjektniZadatak.Controllers
 
             if (ModelState.IsValid)
             {
+                Console.Out.WriteLine("--------EDITTTT-------");
                 try
                 {
                     _context.Update(ljekar);

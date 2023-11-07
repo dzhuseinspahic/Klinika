@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dodaj ljekara</h1>
 
-<h4>Ljekar</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,7 +23,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Titula" class="control-label"></label>
-                <select asp-for="Titula" class="form-control"></select>
+                <select asp-for="Titula" class="form-control" asp-items="Html.GetEnumSelectList<Titula>()">T
+                    <option value="">Izaberite titulu</option>
+                </select>
                 <span asp-validation-for="Titula" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,14 +34,14 @@
                 <span asp-validation-for="Sifra" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Vrati se nazad na listu</a>
 </div>
 
 @section Scripts {
