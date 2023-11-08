@@ -4,39 +4,37 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Pregled podataka o prijemu</h1>
 
 <div>
     <h4>Prijem</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumVrijemePrijema)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumVrijemePrijema)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HitniPrijem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HitniPrijem)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Pacijent)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Pacijent.Ime)
+            @Html.DisplayFor(model => model.Pacijent.Prezime) -
+            @Html.DisplayFor(model => model.Pacijent.BrojZdravstveneKnjizice)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DatumVrijemePrijema)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DatumVrijemePrijema)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ljekar)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ljekar.Ime)
+            @Html.DisplayFor(model => model.Ljekar.Prezime) -
+            @Html.DisplayFor(model => model.Ljekar.Sifra)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ID">Uredi</a> |
+    <a asp-action="Index">Vrati se nazad na listu</a>
 </div>

@@ -49,8 +49,8 @@ namespace ProjektniZadatak.Controllers
         // GET: Prijem/Create
         public IActionResult Create()
         {
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Ime");
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "Ime");
+            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra");
+            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice");
             return View();
         }
 
@@ -66,9 +66,9 @@ namespace ProjektniZadatak.Controllers
                 _context.Add(prijem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Ime", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "Ime", prijem.PacijentID);
+            }  
+            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
+            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
             return View(prijem);
         }
 
@@ -85,8 +85,8 @@ namespace ProjektniZadatak.Controllers
             {
                 return NotFound();
             }
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Ime", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "Ime", prijem.PacijentID);
+            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
+            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
             return View(prijem);
         }
 
@@ -122,8 +122,8 @@ namespace ProjektniZadatak.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Ime", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "Ime", prijem.PacijentID);
+            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
+            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
             return View(prijem);
         }
 
