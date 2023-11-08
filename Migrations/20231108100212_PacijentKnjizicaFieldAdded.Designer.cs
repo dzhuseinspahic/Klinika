@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektniZadatak.Data;
 
@@ -11,9 +12,11 @@ using ProjektniZadatak.Data;
 namespace ProjektniZadatak.Migrations
 {
     [DbContext(typeof(KlinikaContext))]
-    partial class KlinikaContextModelSnapshot : ModelSnapshot
+    [Migration("20231108100212_PacijentKnjizicaFieldAdded")]
+    partial class PacijentKnjizicaFieldAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,9 +96,8 @@ namespace ProjektniZadatak.Migrations
                     b.Property<string>("BrojTelefona")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BrojZdravstveneKnjizice")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BrojZdravstveneKnjizice")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ime")
                         .IsRequired()

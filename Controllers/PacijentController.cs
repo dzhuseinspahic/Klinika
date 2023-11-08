@@ -60,7 +60,7 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Ime,Prezime,Spol,Adresa,BrojTelefona")] Pacijent pacijent)
+        public async Task<IActionResult> Create([Bind("ID,Ime,Prezime,Spol,Adresa,BrojTelefona,BrojZdravstveneKnjizice")] Pacijent pacijent)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Ime,Prezime,Spol,Adresa,BrojTelefona")] Pacijent pacijent)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Ime,Prezime,Spol,Adresa,BrojTelefona,BrojZdravstveneKnjizice")] Pacijent pacijent)
         {
             if (id != pacijent.ID)
             {

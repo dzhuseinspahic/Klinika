@@ -16,6 +16,9 @@ namespace ProjektniZadatak.Models
         [Display(Name = " Broj telefona")]
         [RegularExpression(@"^[0-9\\s]*$", ErrorMessage = "Broj telefona smije sadržavati smo brojeve i razmake.")]
         public string? BrojTelefona { get; set; }
+        [Required(ErrorMessage = "Ovo polje je obavezno.")]
+        [Display(Name = "Broj zdravstvene knjižice")]
+        public string BrojZdravstveneKnjizice { get; set; }
 
         public ICollection<Prijem>? Prijemi { get; set; }
     }
