@@ -259,5 +259,17 @@ namespace ProjektniZadatak.Controllers
             }
             return ljekar.Ime + " " + ljekar.Prezime + " sifra: " + ljekar.ID;
         }
+
+        [HttpGet]
+        public async Task<PartialViewResult> FilterPrijemsByDate(DateTime startDate, DateTime endDate)
+        {
+            var filteredPrijems = await _context.Prijemi
+                .Where(prijem => prijem.DatumVrijemePrijema.Date >= startDate.Date && prijem.DatumVrijemePrijema.Date <= endDate.Date)
+                .Include(p => p.Ljekar)
+                .Include(p => p.Pacijent)
+                .ToListAsync();
+
+            return PartialView("PrijemsTablePartialView", filteredPrijems);
+        }
     }
 }

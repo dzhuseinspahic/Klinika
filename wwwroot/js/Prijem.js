@@ -1,9 +1,4 @@
 ﻿function showPacijent(brKnjizice) {
-    //for Edit
-    /*if (document.getElementById("parPacijent") != null) {
-        document.getElementById("parPacijent").style.display = "none";
-    }*/
-
     if (document.getElementById("parErrorPacijent") != null) {
         document.getElementById("parErrorPacijent").style.display = "none";
     }
@@ -29,11 +24,6 @@
 }
 
 function showLjekar(sifra) {
-    //for Edit
-    /*if (document.getElementById("parLjekar") != null) {
-        document.getElementById("parLjekar").style.display = "none";
-    }*/
-
     if (document.getElementById("parErrorLjekar") != null) {
         document.getElementById("parErrorLjekar").style.display = "none";
     }
@@ -55,5 +45,22 @@ function showLjekar(sifra) {
         var param = 'param=' + sifra;
         xmlhttp.open("GET", "/Prijem/FindLjekarBySifra?" + param, true);
         xmlhttp.send();
+    }
+}
+
+async function FilterPrijems() {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+    try {
+        var param = 'startDate=' + startDate + '&endDate=' + endDate;
+        const response = await fetch('/Prijem/FilterPrijemsByDate?' + param);
+        if (!response.ok) {
+            throw new Error('HTTP error! Status: ${response.status}');
+        }
+        const data = await response.text();
+        const prijemContainer = document.getElementById("prijemTableContainer");
+        prijemContainer.innerHTML = data;
+    } catch (error) {
+        console.error("Error: " + error.message);
     }
 }

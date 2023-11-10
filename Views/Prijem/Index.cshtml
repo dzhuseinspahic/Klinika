@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+<script type="text/javascript" src="~/js/Prijem.js"></script>
+
 <h1>Lista svih prijema</h1>
 
 <p>
@@ -14,67 +16,24 @@
     <div>
         <label>Filtriraj prijeme po datumu:</label>
     </div>
-    <form asp-action="FilterPrijems">
+    <form >
         <div class="form-group row">
-            <label for="dateInputOd" class="col-md-1 col-form-label">Od:</label>
+            <label class="col-md-1 col-form-label">Od:</label>
             <div class="col-md-3">
-                 <input type="date" id="dateInputOd" class="form-control" required />
+                 <input type="date" id="startDate" class="form-control" required />
             </div>
-            <label for="dateInputDo" class="col-md-1 col-form-label">Od:</label>
+            <label class="col-md-1 col-form-label">Od:</label>
             <div class="col-md-3">
-                    <input type="date" id="dateInputDo" class="form-control" required />
+                    <input type="date" id="endDate" class="form-control" required />
             </div>
             <div class="col-md-2">
-                <input type="submit" value="Filtriraj" class="btn btn-primary" />
+                <input type="button" value="Filtriraj" class="btn btn-primary" id="filterButton" onclick="FilterPrijems()" />
             </div>
         </div>
     </form>
 </div>
 <br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Ime, prezime - br. zdr. knjižice pacijenta
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatumVrijemePrijema)
-            </th>
-            <th>
-                Ime, prezime - šifra ljekara
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HitniPrijem)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pacijent.Ime)
-                @Html.DisplayFor(modelItem => item.Pacijent.Prezime) - 
-                @Html.DisplayFor(modelItem => item.Pacijent.BrojZdravstveneKnjizice)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.DatumVrijemePrijema)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ljekar.Ime)
-                @Html.DisplayFor(modelItem => item.Ljekar.Prezime) - 
-                @Html.DisplayFor(modelItem => item.Ljekar.Sifra)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.HitniPrijem)
-            </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Uredi</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Detalji</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Obriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div id="prijemTableContainer">
+    @Html.Partial("PrijemsTablePartialView", Model)
+</div>
