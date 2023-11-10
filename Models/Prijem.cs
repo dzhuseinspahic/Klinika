@@ -5,6 +5,7 @@ namespace ProjektniZadatak.Models
     public class Prijem
     {
         public int ID { get; set; }
+        [Required(ErrorMessage = "Ovo polje je obavezno.")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}")]
         [Display(Name = "Datum i vrijeme prijema")]

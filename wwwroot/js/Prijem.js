@@ -4,7 +4,9 @@
         document.getElementById("parPacijent").style.display = "none";
     }*/
 
-    document.getElementById("parErrorPacijent").style.display = "none";
+    if (document.getElementById("parErrorPacijent") != null) {
+        document.getElementById("parErrorPacijent").style.display = "none";
+    }
 
     if (brKnjizice.length != 8) {
         document.getElementById("txtPacijent").style.display = "none";
@@ -32,7 +34,9 @@ function showLjekar(sifra) {
         document.getElementById("parLjekar").style.display = "none";
     }*/
 
-    document.getElementById("parErrorLjekar").style.display = "none";
+    if (document.getElementById("parErrorLjekar") != null) {
+        document.getElementById("parErrorLjekar").style.display = "none";
+    }
 
     if (sifra.length != 8) {
         document.getElementById("txtLjekar").style.display = "none";

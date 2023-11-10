@@ -13,10 +13,12 @@ namespace ProjektniZadatak.Controllers
     public class PrijemController : Controller
     {
         private readonly KlinikaContext _context;
+        private readonly List<Ljekar> specijalisti;
 
         public PrijemController(KlinikaContext context)
         {
             _context = context;
+            specijalisti = _context.Ljekari.Where(l => l.Titula == Titula.Specijalista).ToList();
         }
 
         // GET: Prijem
@@ -61,9 +63,17 @@ namespace ProjektniZadatak.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(prijem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //only doctors with title "specijalista" can be selected 
+                if (specijalisti.FirstOrDefault(s => s.ID == prijem.LjekarID) != null)
+                {
+                    _context.Add(prijem);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                } else if (prijem.LjekarID != 0)
+                {
+                    ViewBag.ErrorSpecijalista = "Možete izabrati samo ljekare sa titulom \"Specijalista\".";
+                }
+                return View(prijem);
             } 
             return View(prijem);
         }
@@ -93,7 +103,7 @@ namespace ProjektniZadatak.Controllers
                 if (pacijent != null && pacijent.Pacijent != null)
                 {
                     ViewData["PacijentKnjizica"] = pacijent.Pacijent.BrojZdravstveneKnjizice;
-                    ViewData["PacijentInfo"] = pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
+                    ViewData["PacijentInfo"] = "Ime i prezime: " + pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
                 }
             }
             else ViewData["PacijentKnjizica"] = "";
@@ -103,7 +113,7 @@ namespace ProjektniZadatak.Controllers
                 if (ljekar != null && ljekar.Ljekar != null)
                 {
                     ViewData["LjekarSifra"] = ljekar.Ljekar.Sifra;
-                    ViewData["LjekarInfo"] = ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
+                    ViewData["LjekarInfo"] = "Ime i prezime: " + ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
                 }
             }
             else ViewData["LjekarSifra"] = "";
@@ -125,23 +135,31 @@ namespace ProjektniZadatak.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                //only doctors with title "specijalista" can be selected 
+                if (specijalisti.FirstOrDefault(s => s.ID == prijem.LjekarID) != null)
                 {
-                    _context.Update(prijem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+                    try
+                    {
+                        _context.Update(prijem);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!PrijemExists(prijem.ID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                } else
                 {
-                    if (!PrijemExists(prijem.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ViewBag.ErrorLjekarID = "Možete izabrati samo ljekare sa titulom \"Specijalista\".";
                 }
-                return RedirectToAction(nameof(Index));
+                   
             }
             
             if (prijem.PacijentID == 0)
@@ -154,7 +172,7 @@ namespace ProjektniZadatak.Controllers
                 if (pacijent != null && pacijent.Pacijent != null)
                 {
                     ViewBag.PacijentKnjizica = pacijent.Pacijent.BrojZdravstveneKnjizice;
-                    ViewData["PacijentInfo"] = pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
+                    ViewData["PacijentInfo"] = "Ime i prezime: " + pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
                 }
                 
             }
@@ -169,7 +187,7 @@ namespace ProjektniZadatak.Controllers
                 if (ljekar != null && ljekar.Ljekar != null)
                 {
                     ViewBag.LjekarSifra = ljekar.Ljekar.Sifra;
-                    ViewData["LjekarInfo"] = ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
+                    ViewData["LjekarInfo"] = "Ime i prezime: " + ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
                 }
             }
 

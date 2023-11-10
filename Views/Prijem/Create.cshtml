@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<script type="text/javascript" src="/js/Prijem.js"></script>
+<script type="text/javascript" src="~/js/Prijem.js"></script>
 
 
 <h1>Dodaj novi prijem</h1>
@@ -28,6 +28,7 @@
             <div class="form-group">
                 <label>Šifra ljekara</label>
                 <input type="text" onkeyup="showLjekar(this.value)" class="form-control" />
+                <p class="text-danger" id="parErrorLjekar">@ViewBag.ErrorSpecijalista</p>
                 <input type="hidden" asp-for="LjekarID" id="inputLjekarID" />
                 <span id="txtLjekar"></span>
             </div>

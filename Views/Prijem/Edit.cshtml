@@ -19,9 +19,9 @@
             <div class="form-group">
                 <label>Broj zdravstvene knjižice pacijenta</label>
                 <input type="text" onkeyup="showPacijent(this.value)" class="form-control" value="@ViewBag.PacijentKnjizica" />
-                <p style="color:#dc3545" id="parErrorPacijent">@ViewBag.ErrorPacijentID</p>
+                <p class="text-danger" id="parErrorPacijent">@ViewBag.ErrorPacijentID</p>
                 <input type="hidden" asp-for="PacijentID" id="inputPacijentID"/>
-                <span id="txtPacijent">Ime i prezime: @ViewData["PacijentInfo"]</span>
+                <span id="txtPacijent">@ViewData["PacijentInfo"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="DatumVrijemePrijema" class="control-label"></label>
@@ -31,9 +31,9 @@
             <div class="form-group">
                 <label>Šifra ljekara</label>
                 <input type="text" onkeyup="showLjekar(this.value)" class="form-control" value="@ViewBag.LjekarSifra" />
-                <p style="color:#dc3545" id="parErrorLjekar">@ViewBag.ErrorLjekarID</p>
+                <p class="text-danger" id="parErrorLjekar">@ViewBag.ErrorLjekarID</p>
                 <input type="hidden" asp-for="LjekarID" id="inputLjekarID" />
-                <span id="txtLjekar">Ime i prezime: @ViewData["LjekarInfo"]</span>
+                <span id="txtLjekar">@ViewData["LjekarInfo"]</span>
                 <!-- <p id="parLjekar">Ime i prezime: ViewData["LjekarInfo"]</p> -->
             </div>
             <div class="form-group form-check">
