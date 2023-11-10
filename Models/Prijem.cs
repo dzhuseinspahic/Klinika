@@ -8,6 +8,7 @@ namespace ProjektniZadatak.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}")]
         [Display(Name = "Datum i vrijeme prijema")]
+        [FutureDate(ErrorMessage = "Izaberite datum u budućnosti.")]
         public DateTime DatumVrijemePrijema { get; set; }
         public int PacijentID { get; set; }
         public int LjekarID { get; set; }

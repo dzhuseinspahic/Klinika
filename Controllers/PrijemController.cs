@@ -49,8 +49,6 @@ namespace ProjektniZadatak.Controllers
         // GET: Prijem/Create
         public IActionResult Create()
         {
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra");
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice");
             return View();
         }
 
@@ -66,9 +64,7 @@ namespace ProjektniZadatak.Controllers
                 _context.Add(prijem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }  
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
+            } 
             return View(prijem);
         }
 
@@ -85,8 +81,33 @@ namespace ProjektniZadatak.Controllers
             {
                 return NotFound();
             }
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
+            var pacijent = _context.Prijemi
+                .Include(p => p.Pacijent)
+                .FirstOrDefault(p => p.ID == id);
+            var ljekar = _context.Prijemi
+                .Include(item => item.Ljekar)
+                .FirstOrDefault(p => p.ID == id);
+
+            if (pacijent != null)
+            {
+                if (pacijent != null && pacijent.Pacijent != null)
+                {
+                    ViewData["PacijentKnjizica"] = pacijent.Pacijent.BrojZdravstveneKnjizice;
+                    ViewData["PacijentInfo"] = pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
+                }
+            }
+            else ViewData["PacijentKnjizica"] = "";
+            
+            if (ljekar != null)
+            {
+                if (ljekar != null && ljekar.Ljekar != null)
+                {
+                    ViewData["LjekarSifra"] = ljekar.Ljekar.Sifra;
+                    ViewData["LjekarInfo"] = ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
+                }
+            }
+            else ViewData["LjekarSifra"] = "";
+
             return View(prijem);
         }
 
@@ -122,8 +143,36 @@ namespace ProjektniZadatak.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LjekarID"] = new SelectList(_context.Ljekari, "ID", "Sifra", prijem.LjekarID);
-            ViewData["PacijentID"] = new SelectList(_context.Pacijenti, "ID", "BrojZdravstveneKnjizice", prijem.PacijentID);
+            
+            if (prijem.PacijentID == 0)
+            {
+                ViewBag.PacijentKnjizica = "";
+                ViewBag.ErrorPacijentID = "Ne postoji pacijent s navedenim brojem zdravstvene knjižice.";   
+            } else
+            {
+                var pacijent = _context.Prijemi.Include(p => p.Pacijent).FirstOrDefault(p => p.ID == id);
+                if (pacijent != null && pacijent.Pacijent != null)
+                {
+                    ViewBag.PacijentKnjizica = pacijent.Pacijent.BrojZdravstveneKnjizice;
+                    ViewData["PacijentInfo"] = pacijent.Pacijent.Ime + " " + pacijent.Pacijent.Prezime;
+                }
+                
+            }
+
+            if (prijem.LjekarID == 0)
+            {
+                ViewBag.LjekarSifra = "";
+                ViewBag.ErrorLjekarID = "Ne postoji ljekar s navedenom šifrom.";
+            } else
+            {
+                var ljekar = _context.Prijemi.Include(item => item.Ljekar).FirstOrDefault(p => p.ID == id);
+                if (ljekar != null && ljekar.Ljekar != null)
+                {
+                    ViewBag.LjekarSifra = ljekar.Ljekar.Sifra;
+                    ViewData["LjekarInfo"] = ljekar.Ljekar.Ime + " " + ljekar.Ljekar.Prezime;
+                }
+            }
+
             return View(prijem);
         }
 
@@ -169,6 +218,28 @@ namespace ProjektniZadatak.Controllers
         private bool PrijemExists(int id)
         {
           return (_context.Prijemi?.Any(e => e.ID == id)).GetValueOrDefault();
+        }
+
+        [HttpGet]
+        public string FindPacijentByBrKnjizice(string param)
+        {
+            var pacijent = _context.Pacijenti.FirstOrDefaultAsync(p => p.BrojZdravstveneKnjizice == param).Result;
+            if (pacijent == null)
+            {
+                return "Ne postoji pacijent sa ovim brojem zdravstvene knjižice.";
+            }
+            return pacijent.Ime + " " + pacijent.Prezime + " ID: " + pacijent.ID;
+        }
+
+        [HttpGet]
+        public string FindLjekarBySifra(string param)
+        {
+            var ljekar = _context.Ljekari.FirstOrDefaultAsync(item => item.Sifra == param).Result;
+            if(ljekar == null)
+            {
+                return "Ne postoji ljekar sa ovom sifrom.";
+            }
+            return ljekar.Ime + " " + ljekar.Prezime + " sifra: " + ljekar.ID;
         }
     }
 }
