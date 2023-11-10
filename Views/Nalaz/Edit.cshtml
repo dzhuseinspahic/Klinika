@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Uredi</h1>
 
 <h4>Nalaz</h4>
 <hr />
@@ -15,28 +15,28 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Opis" class="control-label"></label>
-                <input asp-for="Opis" class="form-control" />
+                <textarea asp-for="Opis" class="form-control" rows="4"> </textarea>
                 <span asp-validation-for="Opis" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           <!-- <div class="form-group">
                 <label asp-for="DatumVrijemeKreiranja" class="control-label"></label>
                 <input asp-for="DatumVrijemeKreiranja" class="form-control" />
                 <span asp-validation-for="DatumVrijemeKreiranja" class="text-danger"></span>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label asp-for="PrijemID" class="control-label"></label>
                 <select asp-for="PrijemID" class="form-control" asp-items="ViewBag.PrijemID"></select>
                 <span asp-validation-for="PrijemID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Spremi" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Vrati se nazad na listu</a>
 </div>
 
 @section Scripts {

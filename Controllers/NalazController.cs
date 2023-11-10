@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,12 +60,27 @@ namespace ProjektniZadatak.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Opis,DatumVrijemeKreiranja,PrijemID")] Nalaz nalaz)
         {
+            var prijem = _context.Prijemi.FirstOrDefault(p=>p.ID == nalaz.PrijemID);
+            nalaz.Prijem = prijem;
+            
             if (ModelState.IsValid)
             {
                 _context.Add(nalaz);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            } /*else
+            {
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        // The error message is in error.ErrorMessage
+                        var e = error;
+                    }
+                }
+
+            }*/
             ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID", nalaz.PrijemID);
             return View(nalaz);
         }
@@ -97,6 +113,9 @@ namespace ProjektniZadatak.Controllers
             {
                 return NotFound();
             }
+
+            var prijem = _context.Prijemi.FirstOrDefault(p => p.ID == nalaz.PrijemID);
+            nalaz.Prijem = prijem;
 
             if (ModelState.IsValid)
             {
