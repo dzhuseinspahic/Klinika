@@ -24,7 +24,7 @@ namespace ProjektniZadatak.Controllers
         // GET: Prijem
         public async Task<IActionResult> Index()
         {
-            var klinikaContext = _context.Prijemi.Include(p => p.Ljekar).Include(p => p.Nalaz).Include(p => p.Pacijent);
+            var klinikaContext = _context.Prijemi.Include(p => p.Ljekar).Include(p => p.Pacijent);
             return View(await klinikaContext.ToListAsync());
         }
 
@@ -38,8 +38,8 @@ namespace ProjektniZadatak.Controllers
 
             var prijem = await _context.Prijemi
                 .Include(p => p.Ljekar)
-                .Include(p => p.Nalaz)
                 .Include(p => p.Pacijent)
+                .Include(p => p.Nalaz)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (prijem == null)
@@ -61,7 +61,7 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DatumVrijemePrijema,PacijentID,LjekarID,HitniPrijem,NalazID")] Prijem prijem)
+        public async Task<IActionResult> Create([Bind("ID,DatumVrijemePrijema,PacijentID,LjekarID,HitniPrijem")] Prijem prijem)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +128,7 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID, DatumVrijemePrijema, PacijentID, LjekarID, HitniPrijem, NalazID")] Prijem prijem)
+        public async Task<IActionResult> Edit(int id, [Bind("ID, DatumVrijemePrijema, PacijentID, LjekarID, HitniPrijem")] Prijem prijem)
         {
             if (id != prijem.ID)
             {
@@ -206,7 +206,6 @@ namespace ProjektniZadatak.Controllers
 
             var prijem = await _context.Prijemi
                 .Include(p => p.Ljekar)
-                .Include(p => p.Nalaz)
                 .Include(p => p.Pacijent)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (prijem == null)

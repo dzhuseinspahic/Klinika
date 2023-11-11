@@ -22,13 +22,12 @@ namespace ProjektniZadatak.Controllers
         // GET: Nalaz
         public async Task<IActionResult> Index()
         {
-              return _context.Nalazi != null ? 
-                          View(await _context.Nalazi.ToListAsync()) :
-                          Problem("Entity set 'KlinikaContext.Nalazi'  is null.");
+            var klinikaContext = _context.Nalazi.Include(n => n.Prijem);
+            return View(await klinikaContext.ToListAsync());
         }
 
         // GET: Nalaz/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id) 
         {
             if (id == null || _context.Nalazi == null)
             {
@@ -36,6 +35,7 @@ namespace ProjektniZadatak.Controllers
             }
 
             var nalaz = await _context.Nalazi
+                .Include(n => n.Prijem)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (nalaz == null)
             {
@@ -46,9 +46,23 @@ namespace ProjektniZadatak.Controllers
         }
 
         // GET: Nalaz/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int prijemID)
         {
-            return View();
+            //check if one Nalaz for this Prijem is already created
+            var nalazExists = await _context.Nalazi.Include(p => p.Prijem).FirstOrDefaultAsync(p => p.PrijemID == prijemID);
+            //.Prijemi.Include(n => n.Nalaz).FirstOrDefaultAsync(p => p.);
+
+            if (nalazExists == null)
+            {
+                var nalaz = new Nalaz
+                {
+                    PrijemID = prijemID,
+                };
+                return View(nalaz);
+
+            }
+            return RedirectToAction("Edit", "Nalaz", new { id = nalazExists.ID });
+            //return RedirectToAction("Details", "Prijem", new { id = prijemID });
         }
 
         // POST: Nalaz/Create
@@ -56,13 +70,20 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Opis,DatumVrijemeKreiranja")] Nalaz nalaz)
+        public async Task<IActionResult> Create([Bind("ID,Opis,DatumVrijemeKreiranja,PrijemID")] Nalaz nalaz)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nalaz);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(nalaz);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Nalaz", new { id = nalaz.ID });
+                }
+                catch (DbUpdateException d)
+                {
+                    return RedirectToAction("Detail", "Prijem", new { id = nalaz.PrijemID });
+                }
             }
             return View(nalaz);
         }
@@ -80,6 +101,7 @@ namespace ProjektniZadatak.Controllers
             {
                 return NotFound();
             }
+            ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID", nalaz.PrijemID);
             return View(nalaz);
         }
 
@@ -88,12 +110,15 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Opis,DatumVrijemeKreiranja")] Nalaz nalaz)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Opis,DatumVrijemeKreiranja,PrijemID")] Nalaz nalaz)
         {
             if (id != nalaz.ID)
             {
                 return NotFound();
             }
+
+            var prijem = _context.Prijemi.FirstOrDefault(p => p.ID == nalaz.PrijemID);
+            nalaz.Prijem = prijem;
 
             if (ModelState.IsValid)
             {
@@ -113,7 +138,7 @@ namespace ProjektniZadatak.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Prijem", new { id = nalaz.PrijemID });
             }
             return View(nalaz);
         }
@@ -127,6 +152,7 @@ namespace ProjektniZadatak.Controllers
             }
 
             var nalaz = await _context.Nalazi
+                .Include(n => n.Prijem)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (nalaz == null)
             {
@@ -152,7 +178,7 @@ namespace ProjektniZadatak.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Prijem", new { id = nalaz.PrijemID });
         }
 
         private bool NalazExists(int id)

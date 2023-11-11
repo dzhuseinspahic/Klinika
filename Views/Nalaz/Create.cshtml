@@ -9,6 +9,8 @@
 <h1>Dodaj nalaz</h1>
 
 <hr />
+
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -22,6 +24,9 @@
                 <input asp-for="DatumVrijemeKreiranja" type="hidden" value="@formattedDateTime" />
             </div>
             <div class="form-group">
+                <input type="hidden" asp-for="PrijemID" value="@Model.PrijemID" />
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Dodaj" class="btn btn-primary" />
             </div>
         </form>
@@ -29,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Vrati se nazad na listu</a>
+    <a asp-action="Details" asp-controller="Prijem" asp-route-id="@Model?.PrijemID">Vrati se nazad na prijem</a>
 </div>
 
 @section Scripts {

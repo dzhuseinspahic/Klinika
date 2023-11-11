@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektniZadatak.Data;
 
@@ -11,9 +12,11 @@ using ProjektniZadatak.Data;
 namespace ProjektniZadatak.Migrations
 {
     [DbContext(typeof(KlinikaContext))]
-    partial class KlinikaContextModelSnapshot : ModelSnapshot
+    [Migration("20231111100630_PNR")]
+    partial class PNR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,8 +77,7 @@ namespace ProjektniZadatak.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PrijemID")
-                        .IsUnique();
+                    b.HasIndex("PrijemID");
 
                     b.ToTable("Nalaz", (string)null);
                 });
@@ -149,8 +151,8 @@ namespace ProjektniZadatak.Migrations
             modelBuilder.Entity("ProjektniZadatak.Models.Nalaz", b =>
                 {
                     b.HasOne("ProjektniZadatak.Models.Prijem", "Prijem")
-                        .WithOne("Nalaz")
-                        .HasForeignKey("ProjektniZadatak.Models.Nalaz", "PrijemID")
+                        .WithMany()
+                        .HasForeignKey("PrijemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -184,11 +186,6 @@ namespace ProjektniZadatak.Migrations
             modelBuilder.Entity("ProjektniZadatak.Models.Pacijent", b =>
                 {
                     b.Navigation("Prijemi");
-                });
-
-            modelBuilder.Entity("ProjektniZadatak.Models.Prijem", b =>
-                {
-                    b.Navigation("Nalaz");
                 });
 #pragma warning restore 612, 618
         }

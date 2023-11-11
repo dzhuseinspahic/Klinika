@@ -18,11 +18,7 @@
                 <textarea asp-for="Opis" class="form-control" rows="4"> </textarea>
                 <span asp-validation-for="Opis" class="text-danger"></span>
             </div>
-           <!-- <div class="form-group">
-                <label asp-for="DatumVrijemeKreiranja" class="control-label"></label>
-                <input asp-for="DatumVrijemeKreiranja" class="form-control" />
-                <span asp-validation-for="DatumVrijemeKreiranja" class="text-danger"></span>
-            </div>-->
+            <input type="hidden" asp-for="PrijemID" value="@Model.PrijemID"/>
             <div class="form-group">
                 <input type="submit" value="Spremi" class="btn btn-primary" />
             </div>
@@ -31,7 +27,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Vrati se nazad na listu</a>
+    <a asp-action="Details" asp-route-id="@Model?.ID">Detalji o nalazu</a> |
+    <a asp-action="Details" asp-controller="Prijem" asp-route-id="@Model?.PrijemID">Detalji o prijemu</a>
+    <!--<a asp-action="Index">Vrati se nazad na listu</a>-->
 </div>
 
 @section Scripts {

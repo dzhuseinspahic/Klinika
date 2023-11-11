@@ -25,6 +25,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Uredi</a> |
-    <a asp-action="Index">Vrati se nazad na listu</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ID">Uredi nalaz</a> |
+    <a asp-action="Delete" asp-route-id="@Model?.ID">Obriši nalaz</a> |
+    <a asp-action="Details" asp-controller="Prijem" asp-route-id="@Model?.PrijemID">Vrati se nazad na prijem</a>
+    <!--   <a asp-action="Index">Vrati se nazad na listu</a>-->
 </div>

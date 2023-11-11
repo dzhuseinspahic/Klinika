@@ -12,5 +12,8 @@ namespace ProjektniZadatak.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}")]
         [Display(Name = "Datum i vrijeme kreiranja")]
         public DateTime DatumVrijemeKreiranja { get; set; }
+        public int PrijemID { get; set; }
+
+        public Prijem? Prijem { get; set; }
     }
 }

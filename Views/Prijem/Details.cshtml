@@ -38,3 +38,10 @@
     <a asp-action="Edit" asp-route-id="@Model?.ID">Uredi prijem</a> |
     <a asp-action="Index">Vrati se nazad na listu</a>
 </div>
+<div>
+    <a asp-controller="Nalaz" asp-action="Create" asp-route-prijemID="@Model?.ID">Dodaj nalaz</a> |
+    <a asp-controller="Nalaz" asp-action="Details" asp-route-id="@Model?.Nalaz?.ID">Detalji o nalazu</a> 
+</div>
+<div>
+    <p class="text-danger">@ViewBag.NalazDbException</p>
+</div>

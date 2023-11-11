@@ -22,6 +22,11 @@ namespace ProjektniZadatak.Data
             modelBuilder.Entity<Ljekar>().ToTable("Ljekar");
             modelBuilder.Entity<Prijem>().ToTable("Prijem");
             modelBuilder.Entity<Nalaz>().ToTable("Nalaz");
+
+            modelBuilder.Entity<Prijem>()
+                .HasOne(p => p.Nalaz)
+                .WithOne(n => n.Prijem)
+                .HasForeignKey<Nalaz>(n => n.PrijemID);
         }
     }
 }
