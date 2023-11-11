@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,8 +22,9 @@ namespace ProjektniZadatak.Controllers
         // GET: Nalaz
         public async Task<IActionResult> Index()
         {
-            var klinikaContext = _context.Nalazi.Include(n => n.Prijem);
-            return View(await klinikaContext.ToListAsync());
+              return _context.Nalazi != null ? 
+                          View(await _context.Nalazi.ToListAsync()) :
+                          Problem("Entity set 'KlinikaContext.Nalazi'  is null.");
         }
 
         // GET: Nalaz/Details/5
@@ -36,7 +36,6 @@ namespace ProjektniZadatak.Controllers
             }
 
             var nalaz = await _context.Nalazi
-                .Include(n => n.Prijem)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (nalaz == null)
             {
@@ -49,7 +48,6 @@ namespace ProjektniZadatak.Controllers
         // GET: Nalaz/Create
         public IActionResult Create()
         {
-            ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID");
             return View();
         }
 
@@ -58,30 +56,14 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Opis,DatumVrijemeKreiranja,PrijemID")] Nalaz nalaz)
+        public async Task<IActionResult> Create([Bind("ID,Opis,DatumVrijemeKreiranja")] Nalaz nalaz)
         {
-            var prijem = _context.Prijemi.FirstOrDefault(p=>p.ID == nalaz.PrijemID);
-            nalaz.Prijem = prijem;
-            
             if (ModelState.IsValid)
             {
                 _context.Add(nalaz);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            } /*else
-            {
-                foreach (var key in ModelState.Keys)
-                {
-                    var state = ModelState[key];
-                    foreach (var error in state.Errors)
-                    {
-                        // The error message is in error.ErrorMessage
-                        var e = error;
-                    }
-                }
-
-            }*/
-            ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID", nalaz.PrijemID);
+            }
             return View(nalaz);
         }
 
@@ -98,7 +80,6 @@ namespace ProjektniZadatak.Controllers
             {
                 return NotFound();
             }
-            ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID", nalaz.PrijemID);
             return View(nalaz);
         }
 
@@ -107,15 +88,12 @@ namespace ProjektniZadatak.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Opis,DatumVrijemeKreiranja,PrijemID")] Nalaz nalaz)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Opis,DatumVrijemeKreiranja")] Nalaz nalaz)
         {
             if (id != nalaz.ID)
             {
                 return NotFound();
             }
-
-            var prijem = _context.Prijemi.FirstOrDefault(p => p.ID == nalaz.PrijemID);
-            nalaz.Prijem = prijem;
 
             if (ModelState.IsValid)
             {
@@ -137,7 +115,6 @@ namespace ProjektniZadatak.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PrijemID"] = new SelectList(_context.Prijemi, "ID", "ID", nalaz.PrijemID);
             return View(nalaz);
         }
 
@@ -150,7 +127,6 @@ namespace ProjektniZadatak.Controllers
             }
 
             var nalaz = await _context.Nalazi
-                .Include(n => n.Prijem)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (nalaz == null)
             {

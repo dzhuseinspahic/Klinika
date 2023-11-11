@@ -2,8 +2,8 @@
 {
     public enum Spol
     {
-        Musko, 
-        Zensko, 
+        Muško, 
+        Žensko, 
         Nepoznato
     }
 }

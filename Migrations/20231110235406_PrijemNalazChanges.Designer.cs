@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektniZadatak.Data;
 
@@ -11,9 +12,11 @@ using ProjektniZadatak.Data;
 namespace ProjektniZadatak.Migrations
 {
     [DbContext(typeof(KlinikaContext))]
-    partial class KlinikaContextModelSnapshot : ModelSnapshot
+    [Migration("20231110235406_PrijemNalazChanges")]
+    partial class PrijemNalazChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +131,7 @@ namespace ProjektniZadatak.Migrations
                     b.Property<int>("LjekarID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NalazID")
+                    b.Property<int>("NalazID")
                         .HasColumnType("int");
 
                     b.Property<int>("PacijentID")
@@ -155,7 +158,9 @@ namespace ProjektniZadatak.Migrations
 
                     b.HasOne("ProjektniZadatak.Models.Nalaz", "Nalaz")
                         .WithMany()
-                        .HasForeignKey("NalazID");
+                        .HasForeignKey("NalazID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ProjektniZadatak.Models.Pacijent", "Pacijent")
                         .WithMany("Prijemi")
