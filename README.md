@@ -40,10 +40,10 @@ The Klinika is a web-based application developed using ASP.NET Core 7.0 MVC. Thi
 - Initialize EF Core migrations (if not already done):
 
    ```shell
-   dotnet ef migrations add InitialCreate
+   Add-Migration -Context ProjektniZadatak.Data.KlinikaContext InitialCreate
 
 - Apply the migrations to create the database schema
    ```shell
-   dotnet ef database update
+   Update-Datebase -Context ProjektniZadatak.Data.KlinikaContext
    
 6. Build and run the application.
