@@ -1,4 +1,5 @@
 # Klinika
+
 The Klinika is a web-based application developed using ASP.NET Core 7.0 MVC. This application is designed to manage patient, doctor, appointment, and medical report information. Users can add, delete, or edit these records through an intuitive web interface.
 
 ## Features
@@ -36,12 +37,12 @@ The Klinika is a web-based application developed using ASP.NET Core 7.0 MVC. Thi
 3. Open the project in Visual Studio.
 
 4. In your project directory, open a terminal window and run the following commands to set up and update the database:
-   - Initialize EF Core migrations (if not already done):
+- Initialize EF Core migrations (if not already done):
 
    ```shell
    dotnet ef migrations add InitialCreate
 
-   - Apply the migrations to create the database schema
+- Apply the migrations to create the database schema
    ```shell
    dotnet ef database update
    
